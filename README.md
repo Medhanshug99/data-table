@@ -1,50 +1,54 @@
-# Art Institute of Chicago — Artworks Browser
+# 🎨 Art Institute of Chicago — Collection Browser
 
-A React + TypeScript + Vite application using PrimeReact DataTable to browse artworks from the Art Institute of Chicago API.
+A React + TypeScript + Vite application that displays artworks from the Art Institute of Chicago public API using PrimeReact DataTable.
 
-## Features
+This project focuses on proper server-side pagination and persistent multi-page row selection without prefetching or storing unnecessary data.
 
-- **Server-side pagination** — fetches data per page, never all at once
-- **Row selection** with checkboxes (individual rows and select-all on current page)
-- **Persistent selection** across page navigation using an ID-based strategy
-- **Custom N-row selection** via overlay panel — selects first N rows globally without prefetching other pages
+---
 
-## Selection Strategy
+## ✨ Features
+
+- Server-side pagination (data fetched per page)
+- Lazy loading using PrimeReact DataTable
+- Checkbox-based row selection
+- Select / deselect all rows on the current page
+- Custom “Select First N Rows” overlay
+- Persistent selection across page navigation
+- ID-based selection logic (no mass data storage)
+
+---
+
+## 🧠 Selection Strategy
 
 Selections persist across pages using three pieces of state:
 
 | State | Purpose |
 |-------|---------|
-| `selectedIds: Set<number>` | Artwork IDs explicitly checked by the user |
-| `deselectedIds: Set<number>` | IDs unchecked from within the auto-select range |
-| `autoSelectCount: number` | "First N artworks globally are selected" |
+| `selectedIds: Set<number>` | Artwork IDs explicitly selected by the user |
+| `deselectedIds: Set<number>` | IDs manually unchecked inside the auto-select range |
+| `autoSelectCount: number` | Represents “First N artworks globally are selected” |
 
-When a page loads, a row is considered **selected** if:
-- Its ID is in `selectedIds`, OR
-- Its global index (across all pages) is `< autoSelectCount` AND its ID is NOT in `deselectedIds`
+When a page loads, a row is considered selected if:
 
-This means no other pages are ever prefetched — all selection logic is computed locally from IDs and indices.
+- Its ID exists in `selectedIds`, OR
+- Its global index is `< autoSelectCount` AND its ID is NOT in `deselectedIds`
 
-## Setup
+This approach ensures:
 
-```bash
-npm install
-npm run dev
-```
+- No prefetching of additional pages
+- No storage of other page data
+- Clean, scalable selection logic
+- Full compliance with server-side pagination requirements
 
-## Build
+---
 
-```bash
-npm run build
-```
+## 🛠 Tech Stack
 
-## Deploy
+- React 18
+- TypeScript
+- Vite
+- PrimeReact DataTable
+- Art Institute of Chicago API  
+  `https://api.artic.edu/api/v1/artworks`
 
-Upload the `dist/` folder to Netlify, Cloudflare Pages, or any static host.
-
-## Tech Stack
-
-- **Vite** + **TypeScript**
-- **React 18**
-- **PrimeReact DataTable**
-- Art Institute of Chicago public API: `https://api.artic.edu/api/v1/artworks`
+---
